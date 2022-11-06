@@ -1,5 +1,6 @@
 package com.example.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +26,7 @@ public class OrderService {
 
 	public Orders createOrder(OrderCreationDto orderDto) {
 		Orders order=new Orders();
-		order.setOrderDate(orderDto.getOrderDate());
+		order.setOrderDate(LocalDateTime.now());
 		order.setOrderStatus("New");
 		List<Items> itemList=new ArrayList<>();
 		orderDto.getItems().forEach(itm->{
@@ -33,14 +34,10 @@ public class OrderService {
 			currentItem.setItemName(itm.getItemName());
 			currentItem.setItemUnitPrice(itm.getItemUnitPrice());
 			currentItem.setItemQuantity(itm.getItemQuantity());
-//			currentItem.setOrder(order);
-			//itemsRepo.save(currentItem);
 			itemList.add(currentItem);
 		});
 		order.setItems(itemList);
-		
 		itemsRepo.saveAll(itemList);
-
 		Orders data = ordersRepo.save(order);
 		if(data!=null) {
 			return data;
